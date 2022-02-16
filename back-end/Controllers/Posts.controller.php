@@ -16,6 +16,7 @@ class Post {
     
   }
   function add() {
+    echo "adding post ... \xa";
     $params = [$this->title, $this->description, $this->comments_count];
     $this->id = $this->model->add($params);
   }
@@ -28,9 +29,9 @@ class Post {
   }
 
   function update($params) {
-    $this->title = $params['title'];
-    $this->description = $params['description'];;
-    $this->comments_count = $params['comments_count'];;
+    $this->title = isset($params['title']) ? $params['title'] : $this->title;
+    $this->description = isset($params['description']) ? $params['description'] : $this->description;
+    $this->comments_count = isset($params['comments_count']) ? $params['comments_count'] : $this->comments_count;
     $params = [$this->title, $this->description, $this->comments_count, $this->id];
     if($this->id)
       $this->model->update($params);
@@ -41,19 +42,21 @@ class Post {
   }
 
   function get_all() {
-    return " id => ".$this->id."\xa title => ".$this->title."\xa description => ".$this->description."\xa comment_count => ".$this->comments_count."\xa";
+    return " id => ".$this->id."\xa title => ".$this->title."\xa description => ".$this->description."\xa comments_count => ".$this->comments_count."\xa";
   }
 
-  function fetch_all() {
-    $posts = $this->model->fetch_all();
-    $result = [];
-    foreach($posts as $post)
-      $result[] = new Post($post['title'], $post['description'], $post['comments_count'], $post['id']); 
+  static function fetch_all() {
+    $postModel = new PostModel();
+    $result = $postModel->fetch_all();
+    // $posts = [];
+    // foreach($result as $post)
+    //   $posts[] = new Post($post['title'], $post['description'], $post['comments_count'], $post['id']); 
     return $result;
   }
+  
+  static function fetch_one($id) {
+    $postModel = new PostModel();
+    $post = $postModel->fetch_one($id); 
+    return new Post($post['title'], $post['description'], $post['comments_count'], $id);
+  }
 }
-
-$post = new Post('lala land', "I really don't know what really this movie about, but seems from the cover photo that it's had something to do with romance", 5);
-echo ($post->get_all());
-$post->update(["title"=>'new title', "description"=>"new description it's 100% not like the original", "comments_count"=>4]);
-echo ($post->get_all());
