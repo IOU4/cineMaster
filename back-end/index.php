@@ -3,7 +3,9 @@ require_once './Controllers/Global.controller.php';
 
 $app = new Controller();
 $app->get('/', function() {
-  echo "welcome to Cine Master API \xa";
+  // echo "welcome to Cine Master API \xa";
+  header('content-type: application/json');
+  echo json_encode($_GET);
 });
 
 $app->get('/posts', function() {
@@ -12,14 +14,13 @@ $app->get('/posts', function() {
   echo json_encode(Post::fetch_all());
 });
 
-$app->post('/', function($data) {
+$app->get('/post', function($query) {
   require_once './Controllers/Posts.controller.php'; 
-  if(!isset($data['title'], $data['description'], $data['comments_count'])) {
-    echo 'no sufficant data';
-    return;
-  }
-  $post = new Post($data['title'], $data['description'], $data['comments_count']);
-  $post->add();
+  if(empty($query['id'])) echo "please provide an id";
+  else {
+    header('content-type: application/json');
+    echo json_encode(Post::fetch_one($query['id'])->get_all());
+  } 
 });
 
 $app->delete('/', function($data){
@@ -46,4 +47,14 @@ $app->put('/', function($data) {
   $post->update($new_data);
   header('content-type: application/json');
   echo json_encode(['updated'=>true]);
+});
+
+$app->post('/', function($data) {
+  require_once './Controllers/Posts.controller.php'; 
+  if(!isset($data['title'], $data['description'], $data['comments_count'])) {
+    echo 'no sufficant data';
+    return;
+  }
+  $post = new Post($data['title'], $data['description'], $data['comments_count']);
+  $post->add();
 });

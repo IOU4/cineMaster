@@ -8,8 +8,20 @@ class Controller {
   }
 
   function get($route, $callable) {
-    if($route == $this->uri && $this->method == 'GET') 
-      $callable();
+    $parsed_url = parse_url($this->uri);
+    $query = [];
+    if(isset($parsed_url['query']))
+      parse_str($parsed_url['query'], $query);
+    if($route == $parsed_url['path'] && $this->method == 'GET') 
+        $callable($query);
+  }
+
+  function post($route, $callable) {
+    $path = parse_url($this->uri)['path'];
+    if($route == $path && $this->method == 'POST') {
+      $data = $_POST;
+      $callable($data);
+    }
   }
 
   function delete($route, $callable) {
@@ -18,12 +30,5 @@ class Controller {
 
   function put($route, $callable) {
     $this->post('/put'.$route, $callable);
-  }
-
-  function post($route, $callable) {
-    if($route == $this->uri && $this->method == 'POST') {
-      $data = $_POST;
-      $callable($data);
-    }
   }
 }

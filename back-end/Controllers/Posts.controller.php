@@ -42,7 +42,7 @@ class Post {
   }
 
   function get_all() {
-    return " id => ".$this->id."\xa title => ".$this->title."\xa description => ".$this->description."\xa comments_count => ".$this->comments_count."\xa";
+    return ["id"=>$this->id," title"=>$this->title, "description"=>$this->description, "comments_count"=>$this->comments_count];
   }
 
   static function fetch_all() {
