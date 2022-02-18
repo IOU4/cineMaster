@@ -2,17 +2,18 @@ CREATE DATABASE IF NOT EXISTS CineMaster;
 use CineMaster;
 CREATE TABLE IF NOT EXISTS users (
   id INT AUTO_INCREMENT,
-  username varchar(50) NOT NULL UNIQUE,
-  email varchar(100) NOT NULL UNIQUE,
-  password varchar(100) NOT NULL,
-  PRIMARY KEY(id),
+  username VARCHAR(50) NOT NULL UNIQUE,
+  email VARCHAR(100) NOT NULL UNIQUE,
+  password BINARY(64) NOT NULL,
+  PRIMARY KEY(id)
 );
-CREATE DATABASE IF NOT EXISTS posts ()
+CREATE TABLE IF NOT EXISTS posts (
   id INT NOT NULL AUTO_INCREMENT,
   title VARCHAR(60),
   description TEXT(250),
-  comments_count INT(1000),
+  likes_count INT, 
   author_id INT, 
+  cover VARCHAR(255),
   PRIMARY KEY(id),
   FOREIGN KEY(author_id) REFERENCES users(id)
 );
@@ -22,6 +23,6 @@ CREATE TABLE IF NOT EXISTS comments (
   author_id int,
   content text(500),
   PRIMARY KEY(id),
-  FOREIGN KEY(post_id) REFERENCES posts(id),
-  FOREIGN KEY(author_id) REFERENCES users(id)
+  FOREIGN KEY(post_id) REFERENCES posts(id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY(author_id) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
