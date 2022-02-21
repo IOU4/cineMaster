@@ -26,3 +26,23 @@ CREATE TABLE IF NOT EXISTS comments (
   FOREIGN KEY(post_id) REFERENCES posts(id) ON DELETE CASCADE ON UPDATE CASCADE,
   FOREIGN KEY(author_id) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
+
+INSERT INTO users (
+  title, 
+  description, 
+  likes_count,
+  ) VALUES ( 
+  "Inception",
+  "yet another decpario movie , this one is dream and stuff", 
+  289
+);
+
+INSERT INTO users (
+  title, 
+  description, 
+  likes_count,
+  ) VALUES ( 
+  "shuter island",
+  "leonardo decaprio makes prefect again, this thing gonna hurt your brain for a while ", 
+  332
+);

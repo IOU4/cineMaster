@@ -4,14 +4,13 @@ require_once './Models/Database.php';
 class PostModel extends Model {
 
   function add($params) {
-    echo "adding post  in Model ... \xa";
-    $query = 'insert into posts (title, description, comments_count) values(?, ?, ?)';
+    $query = 'insert into posts (title, description, likes_count, author_id) values(?, ?, ?, ?)';
     $this->execStatement($query, $params);
     return $this->execStatement('select last_insert_id() as id')->get_result()->fetch_assoc()['id'];
   }
   
   function update($params) {
-    $query = 'update posts set title = ?, description = ?, comments_count = ? where id = ?';
+    $query = 'update posts set title = ?, description = ?, likes_count = ? where id = ?';
     $this->execStatement($query, $params);
   }
   
@@ -32,8 +31,15 @@ class PostModel extends Model {
   }
 
   function fetch_one($id) {
-    $query = 'select title, description, comments_count from posts where id = ?';
+    $query = 'select * from posts where id = ?';
     $stmnt = $this->execStatement($query, [$id]);
     return $stmnt->get_result()->fetch_assoc();
   }
+
+  function fetch_by_user($author_id) {
+    $query = 'select * from posts where author_id = ?';
+    $stmnt = $this->execStatement($query, [$author_id]);
+    return $stmnt->get_result()->fetch_all();
+  }
+
 }

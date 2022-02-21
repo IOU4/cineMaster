@@ -1,5 +1,6 @@
 <?php
 class Model {
+
   protected $connection;
   const DB_NAME = 'CineMaster';
   const DB_USER = 'root';
@@ -16,4 +17,5 @@ class Model {
     $stmnt->execute($params); 
     return $stmnt;
   } 
+
 }
