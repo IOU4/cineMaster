@@ -10,17 +10,13 @@ class UserModel extends Model {
   }
   
   function update($params) {
-    $query = 'update users set username = ?, post_id = ?, content = ? where id = ?';
+    $query = 'update users set username = ?, email = ?, password = ? where id = ?';
     $this->execStatement($query, $params);
   }
   
   function delete($params) {
     $query = 'delete from users where id = ?';
     $this->execStatement($query, $params);
-  }
-  
-  function get_id() {
-    return $this->id;
   }
   
   function fetch_all() {
