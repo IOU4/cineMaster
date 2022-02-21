@@ -30,7 +30,7 @@ class PostModel extends Model {
     return $result->fetch_all(MYSQLI_ASSOC);
   }
 
-  function fetch_one($id) {
+  function fetch_by_id($id) {
     $query = 'select * from posts where id = ?';
     $stmnt = $this->execStatement($query, [$id]);
     return $stmnt->get_result()->fetch_assoc();

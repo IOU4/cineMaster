@@ -1,29 +1,27 @@
 <?php
-include_once './Models/Posts.model.php';
-class Post {
+include_once './Models/Comment.model.php';
+class Comment {
 
   private $id;
-  private $title;
-  private $description;
-  private $likes_count;
-  private $cover;
+  private $post_id;
   private $author_id;
+  private $content;
+  private $created_at;
   private $model;
 
-  function __construct($author_id, $title = '', $description = '', $likes_count = 1, $id = null) {
+  function __construct($author_id, $post_id, $content, $created_at = null, $id = null) {
 
     $this->id = $id;
-    $this->title = $title;
-    $this->description = $description;
-    $this->likes_count = $likes_count;
     $this->author_id = $author_id;
-    $this->cover = 'image';
-    $this->model = new PostModel();
+    $this->post_id = $post_id;
+    $this->content = $content;
+    $this->created_at = $created_at;
+    $this->model = new CommentModel();
     
   }
 
   function add() {
-    $params = array($this->title, $this->description, $this->likes_count, $this->author_id);
+    $params = array($this->post_id, $this->author_id, $this->content);
     $this->id = $this->model->add($params);
   }
 
@@ -46,7 +44,7 @@ class Post {
   }
 
   function get_all() {
-    return ["id"=>$this->id," title"=>$this->title, "description"=>$this->description, "likes_count"=>$this->likes_count, 'author_id'=>$this->author_id];
+    return ["id"=>$this->id," title"=>$this->title, "description"=>$this->description, "likes_count"=>$this->likes_count, 'author_id'=>$this->author_id, 'created_at'=>$this->created_at];
   }
 
   static function fetch_all() {
@@ -58,10 +56,11 @@ class Post {
     return $result;
   }
   
-  static function fetch_one($id) {
+  static function fetch_by_id($id) {
     $postModel = new PostModel();
-    $post = $postModel->fetch_one($id); 
-    return new Post($post['author_id'], $post['title'], $post['description'], $post['likes_count'], $id);
+    $post = $postModel->fetch_by_id($id); 
+    return new Post($post['author_id'], $post['title'], $post['description'], $post['likes_count'], $post['created_at'], $id);
   }
 
 }
+
