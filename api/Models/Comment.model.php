@@ -31,19 +31,19 @@ class CommentModel extends Model {
   }
 
   function fetch_by_id($id) {
-    $query = 'select * from comments where id = ?';
+    $query = 'select comments.id, comments.content, users.username, comments.created_at from comments join users on comments.author_id = users.id where comments.id = ?';
     $stmnt = $this->execStatement($query, [$id]);
     return $stmnt->get_result()->fetch_assoc();
   }
 
   function fetch_by_user($author_id) {
-    $query = 'select * from comments where author_id = ?';
+    $query = 'select comments.id, comments.content, users.username, comments.created_at from comments join users on comments.author_id = users.id where comments.author_id = ?';
     $stmnt = $this->execStatement($query, [$author_id]);
     return $stmnt->get_result()->fetch_all(MYSQLI_ASSOC);
   }
 
   function fetch_by_post($post_id) {
-    $query = 'select * from comments where post_id = ?';
+    $query = 'select comments.id, comments.content, users.username, comments.created_at from comments join users on comments.author_id = users.id where comments.post_id = ? order by id desc';
     $params = [$post_id]; 
     $stmnt = $this->execStatement($query, $params);
     return $stmnt->get_result()->fetch_all(MYSQLI_ASSOC);

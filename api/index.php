@@ -9,18 +9,22 @@ $app->get('/api', function() {
 });
 
 // posts --------------
-$app->get('/api/posts', function() {
+$app->get('/api/posts', function($query) {
   require_once './Controllers/Post.controller.php'; 
   header('content-type: application/json');
-  echo json_encode(Post::fetch_all());
+  if(!empty($query['author']))
+    echo json_encode(Post::fetch_by_user($query['author']));
+  else 
+    echo json_encode(Post::fetch_all());
 });
 
 $app->get('/api/post', function($query) {
   if(empty($query['id'])) 
-    throw new Exception('please provide a valid id');
+    throw new Exception('please provide a valid id ');
   require_once './Controllers/Post.controller.php'; 
   header('content-type: application/json');
-  echo json_encode(Post::fetch_by_id($query['id'])->get_all());
+  if(!empty($query['id']))
+    echo json_encode(Post::fetch_by_id($query['id']));
 });
 
 $app->delete('/api/post', function($data){
@@ -52,7 +56,7 @@ $app->put('/api/post', function($data) {
 
 $app->post('/api/add/post', function($data) {
   if(!isset($data['author_id'], $data['title'], $data['description'], $data['likes_count'])) 
-    throw new Exception('please provide a valid id');
+    throw new Exception("please provide a valid post id");
 
   require_once './Controllers/Post.controller.php'; 
   $post = new Post($data['author_id'], $data['title'], $data['description'], $data['likes_count']);
@@ -77,8 +81,10 @@ $app->get('/api/comments/post', function($query){
 });
 
 $app->post('/api/add/comment', function($data){
-  if(!isset($data['post_id'], $data['author_id'], $data['content']))
+  if(!isset($data['post_id'], $data['author_id'], $data['content'])){
+    var_dump($data);
     throw new Exception('please provide post_id, author_id and a content');
+  }
   require_once './Controllers/Comment.controller.php';
   $comment = new Comment($data['author_id'], $data['post_id'], $data['content']);
   $comment->add();
@@ -118,11 +124,11 @@ $app->get('/api/users', function(){
 });
 
 $app->get('/api/user', function($query){
-  if(empty($query['id']))
-    throw new Exception('please proivde an id');
+  if(empty($query['username']))
+    throw new Exception('please proivde a username');
   require_once './Controllers/User.controller.php';
   header('content-type: application/json');
-  echo json_encode(User::fetch_by_id($query['id'])->get_all());
+  echo json_encode(User::fetch_by_username($query['username']));
 });
 
 $app->post('/api/add/user', function($data){

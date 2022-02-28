@@ -24,22 +24,22 @@ class PostModel extends Model {
   }
   
   function fetch_all() {
-    $query = 'select * from posts'; 
+    $query = 'select posts.id, posts.title, posts.description, posts.created_at, users.username from posts join users on posts.author_id = users.id order by id desc'; 
     $stmnt = $this->execStatement($query);
     $result = $stmnt->get_result();
     return $result->fetch_all(MYSQLI_ASSOC);
   }
 
   function fetch_by_id($id) {
-    $query = 'select * from posts where id = ?';
+    $query = 'select posts.id, posts.title, posts.description, posts.created_at, posts.cover, users.username from posts join users on posts.author_id = users.id where posts.id = ?';
     $stmnt = $this->execStatement($query, [$id]);
     return $stmnt->get_result()->fetch_assoc();
   }
 
-  function fetch_by_user($author_id) {
-    $query = 'select * from posts where author_id = ?';
-    $stmnt = $this->execStatement($query, [$author_id]);
-    return $stmnt->get_result()->fetch_all();
+  function fetch_by_user($author) {
+    $query = 'select posts.id, posts.title, posts.description, posts.created_at, posts.cover, users.username from posts join users on posts.author_id = users.id where users.username = ?';
+    $stmnt = $this->execStatement($query, [$author]);
+    return $stmnt->get_result()->fetch_all(MYSQLI_ASSOC);
   }
 
 }

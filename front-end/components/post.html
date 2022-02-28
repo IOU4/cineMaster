@@ -32,26 +32,26 @@
         ></div>
       </div>
       <div style="height: 55vh"></div>
-      <div>
-        <h1 class="text-5xl font-bold">Shutter Island</h1>
-        <div class="flex gap-4 justify-start items-center my-2">
+      <div id="post-content">
+        <h1 id="title" class="text-5xl font-bold">Shutter Island</h1>
+        <a class="flex gap-4 justify-start items-center my-2">
           <div class="avatar">
-            <div class="w-16 rounded-full">
+            <div id="user-avatar" class="w-16 rounded-full">
               <img src="https://api.lorem.space/image/face?hash=64318" />
             </div>
           </div>
-          <p>Imad ouchaib</p>
-        </div>
-        <p>2022-02-22 13:44:55</p>
-        <div class="my-4 badge badge-success">Movie</div>
-        <p class="my-2">
+          <p id="username">Imad ouchaib</p>
+        </a>
+        <p id="created_at">2022-02-22 13:44:55</p>
+        <div id="catergory" class="my-4 badge badge-success">Movie</div>
+        <p id="description" class="my-2">
           Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda
           Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda
         </p>
         <form class="mt-4 input-group">
           <input
             type="text"
-            name="comment"
+            name="content"
             placeholder="add a comment ..."
             class="input input-bordered"
           />
@@ -60,10 +60,6 @@
         <div class="divider">Comments</div>
 
         <!-- comments -->
-        <div class="font-bold">Jawad Ouchaib</div>
-        <p class="mb-4">this is a grat movie</p>
-        <div class="font-bold">Jawad Ouchaib</div>
-        <p class="mb-4">this is a grat movie</p>
       </div>
     </main>
     <footer class="items-center p-4 footer bg-neutral text-neutral-content">
@@ -124,4 +120,5 @@
       </div>
     </footer>
   </body>
+  <script src="../scripts/post.js"></script>
 </html>

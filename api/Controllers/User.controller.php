@@ -56,5 +56,11 @@ class User {
     return new User($user['username'], $user['email'], $user['password'], $user['created_at'], $id);
   }
 
+  static function fetch_by_username($username) {
+    $userModel = new UserModel();
+    $user = $userModel->fetch_by_username($username);
+    return $user;
+  }
+
 }
 

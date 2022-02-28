@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" theme-data="dark">
   <head>
     <title>Cine Master</title>
     <meta charset="UTF-8" />
@@ -42,17 +42,18 @@
       </div>
     </nav>
     <main class="grid gap-6 place-items-center py-24 px-4">
-      <form id="add-post" class="w-11/12 lg:w-9/12" method="post">
+      <form id="add-post" class="w-11/12 lg:w-9/12">
         <h1 class="text-2xl text-center">Add Post :</h1>
         <div class="form-control">
           <label class="label">
             <span class="label-text">Title</span>
           </label>
           <input
-            type="text"
+            type="name"
             placeholder="Title"
             class="input input-bordered"
             name="title"
+            required
           />
         </div>
         <div class="form-control">
@@ -64,24 +65,26 @@
             name="description"
             placeholder="Description"
             class="input input-bordered"
+            required
           />
         </div>
+        <input type="hidden" name="author_id" />
+        <input type="hidden" name="likes_count" value="333" />
         <div class="form-control">
           <label class="label">
             <span class="label-text">Cover</span>
           </label>
-          <input
-            type="file"
-            placeholder="Description"
-            class="input input-bordered"
-            name="cover"
-          />
+          <input type="file" class="input input-bordered" name="cover" />
         </div>
         <div class="form-control">
           <label class="label">
-            <span class="label-text">Email</span>
+            <span class="label-text">Category</span>
           </label>
-          <select class="w-full select select-bordered" name="category">
+          <select
+            class="w-full select select-bordered"
+            name="category"
+            required
+          >
             <option disabled selected>Pick a category</option>
             <option value="romance">Romance</option>
             <option value="action">Action</option>
@@ -92,9 +95,10 @@
         </div>
         <div class="form-control">
           <input
-            type="submit"
+            type="button"
             class="mt-8 input input-primary"
             value="Add Post"
+            onclick="submitNewPost()"
           />
         </div>
       </form>

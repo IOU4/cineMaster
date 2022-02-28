@@ -1,5 +1,6 @@
 <?php
 include_once './Models/Post.model.php';
+include_once './Controllers/Comment.controller.php';
 class Post {
 
   private $id;
@@ -53,17 +54,32 @@ class Post {
 
   static function fetch_all() {
     $postModel = new PostModel();
-    $result = $postModel->fetch_all();
-    // $posts = [];
-    // foreach($result as $post)
-    //   $posts[] = new Post($post['title'], $post['description'], $post['likes_count'], $post['id']); 
-    return $result;
+    $posts = $postModel->fetch_all();
+    $posts = array_map(function($post){
+      $comments = Comment::fetch_by_post($post['id']);
+      $post['comments'] = $comments; 
+      return $post;
+    }, $posts);
+    return  $posts;
   }
   
   static function fetch_by_id($id) {
     $postModel = new PostModel();
     $post = $postModel->fetch_by_id($id); 
-    return new Post($post['author_id'], $post['title'], $post['description'], $post['likes_count'], $post['created_at'], $id);
+    $comments =  Comment::fetch_by_post($id); 
+    $post['comments'] = $comments;
+    return $post;
+  }
+
+  static function fetch_by_user($author) {
+    $postModel = new PostModel(); 
+    $posts = $postModel->fetch_by_user($author);
+    $posts = array_map(function($post){
+      $comments = Comment::fetch_by_post($post['id']);
+      $post['comments'] = $comments; 
+      return $post;
+    }, $posts);
+    return $posts;
   }
 
 }

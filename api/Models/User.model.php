@@ -32,4 +32,10 @@ class UserModel extends Model {
     return $stmnt->get_result()->fetch_assoc();
   }
 
+  function fetch_by_username($username) {
+    $query = 'select username, email from users where username = ?';
+    $stmnt = $this->execStatement($query, [$username]);
+    return $stmnt->get_result()->fetch_assoc();
+  }
+
 }
