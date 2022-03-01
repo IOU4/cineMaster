@@ -18,6 +18,22 @@ class User {
     $this->model = new UserModel();
   }
 
+  function login() {
+    $params = array($this->username);
+    $res = $this->model->login($params);
+    if(isset($res['password']) && $this->password == $res['password']) {
+      session_start();
+      $_SESSION['user_id'] = $res['id'];
+      $_SESSION['username'] = $this->username;
+    }
+  }
+  
+  function singup() {
+    $params = array($this->username, $this->email, $this->password);
+    // TODO: check for duplication
+    $this->model->singup($params);
+  }
+
   function add() {
     $params = array($this->username, $this->email, $this->password);
     $this->id = $this->model->add($params);
@@ -38,10 +54,6 @@ class User {
 
   function get_id() {
     return "id => ".$this->id."\xa";
-  }
-
-  function get_all() {
-    return ["id"=>$this->id,"username"=>$this->username, "email"=>$this->email, "password"=>$this->password, 'created_at'=>$this->created_at];
   }
 
   static function fetch_all() {

@@ -3,12 +3,23 @@ require_once './Models/Database.php';
 
 class UserModel extends Model {
 
+  function login($params) {
+    $query = "select password from users where username = ?";
+    $stmnt = $this->execStatement($query, $params); 
+    return $stmnt->get_result()->fetch_assoc();
+  }
+
   function add($params) {
     $query = 'insert into users (username, email, password) values(?, ?, ?)';
     $this->execStatement($query, $params);
     return $this->execStatement('select last_insert_id() as id')->get_result()->fetch_assoc()['id'];
   }
   
+  function singup($params) {
+    $query = "insert into users (username, email, password) values(?, ?, ?)";
+    $this->execStatement($query, $params);
+  }
+
   function update($params) {
     $query = 'update users set username = ?, email = ?, password = ? where id = ?';
     $this->execStatement($query, $params);

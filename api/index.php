@@ -3,13 +3,28 @@ require_once './Controllers/Global.controller.php';
 
 $app = new Controller();
 
-$app->get('/api', function() {
+$app->post('/login', function($data) {
+  if(isset($data['username'], $data['password']))
+    throw new Exception('message not enough data provided');
+  require_once "./Controllers/User.controller.php";
+  $login = new User($data['username'], 'null email', $data['password']);
+  $login->login();
+});
+
+$app->post('/singup', function($data) {
+  if(isset($data['username'], $data['email'], $data['password']))
+    throw new Exception('message not enough data provided');
+  require_once "./Controllers/User.controller.php";
+  $login = new User($data['username'], $data['email'], $data['password']);
+  $login->singup();
+});
+
+$app->get('', function() {
   header('content-type: application/json');
   echo json_encode(['message'=>'welcome to CineMaster API']);
 });
 
-// posts --------------
-$app->get('/api/posts', function($query) {
+$app->get('/posts', function($query) {
   require_once './Controllers/Post.controller.php'; 
   header('content-type: application/json');
   if(!empty($query['author']))
@@ -18,7 +33,7 @@ $app->get('/api/posts', function($query) {
     echo json_encode(Post::fetch_all());
 });
 
-$app->get('/api/post', function($query) {
+$app->get('/post', function($query) {
   if(empty($query['id'])) 
     throw new Exception('please provide a valid id ');
   require_once './Controllers/Post.controller.php'; 
@@ -27,7 +42,49 @@ $app->get('/api/post', function($query) {
     echo json_encode(Post::fetch_by_id($query['id']));
 });
 
-$app->delete('/api/post', function($data){
+$app->get('/users', function(){
+  require_once './Controllers/User.controller.php';
+  header('content-type: application/json');
+  echo json_encode(User::fetch_all());
+});
+
+$app->get('/user', function($query){
+  if(empty($query['username']))
+    throw new Exception('please proivde a username');
+  require_once './Controllers/User.controller.php';
+  header('content-type: application/json');
+  echo json_encode(User::fetch_by_username($query['username']));
+});
+
+$app->get('/comments', function() {
+  require_once './Controllers/Comment.controller.php'; 
+  header('content-type: application/json');
+  echo json_encode(Comment::fetch_all());
+});
+
+$app->get('/comments/post', function($query){
+  if(empty($query['post_id']))
+    throw new Exception('please proivde a post id'); 
+  require_once './Controllers/Comment.controller.php';
+  header('content-type: application/json');
+  echo json_encode(Comment::fetch_by_post($query['post_id']));
+});
+
+if(empty($_SESSION['user_id']))
+  die(json_encode(['logged'=>false]));
+
+$app->post('/add/post', function($data) {
+  if(!isset($data['author_id'], $data['title'], $data['description'], $data['likes_count'])) 
+    throw new Exception("please provide a valid post id");
+
+  require_once './Controllers/Post.controller.php'; 
+  $post = new Post($data['author_id'], $data['title'], $data['description'], $data['likes_count']);
+  $post->add();
+  header('content-type: application/json');
+  echo json_encode(['added'=>true]);
+});
+
+$app->post('/delete/post', function($data){
   if(!isset($data['id']))
     throw new Exception('please provide a valid id');
   require_once './Controllers/Post.controller.php'; 
@@ -37,7 +94,7 @@ $app->delete('/api/post', function($data){
   echo json_encode(['deleted'=>true]);
 });
 
-$app->put('/api/post', function($data) {
+$app->post('/update/post', function($data) {
   if(empty($data['id']))
     throw new Exception('please provide a valid id');
 
@@ -54,33 +111,8 @@ $app->put('/api/post', function($data) {
   echo json_encode(['updated'=>true]);
 });
 
-$app->post('/api/add/post', function($data) {
-  if(!isset($data['author_id'], $data['title'], $data['description'], $data['likes_count'])) 
-    throw new Exception("please provide a valid post id");
-
-  require_once './Controllers/Post.controller.php'; 
-  $post = new Post($data['author_id'], $data['title'], $data['description'], $data['likes_count']);
-  $post->add();
-  header('content-type: application/json');
-  echo json_encode(['added'=>true]);
-});
-
 // comments ------------------------------
-$app->get('/api/comments', function() {
-  require_once './Controllers/Comment.controller.php'; 
-  header('content-type: application/json');
-  echo json_encode(Comment::fetch_all());
-});
-
-$app->get('/api/comments/post', function($query){
-  if(empty($query['post_id']))
-    throw new Exception('please proivde a post id'); 
-  require_once './Controllers/Comment.controller.php';
-  header('content-type: application/json');
-  echo json_encode(Comment::fetch_by_post($query['post_id']));
-});
-
-$app->post('/api/add/comment', function($data){
+$app->post('/add/comment', function($data){
   if(!isset($data['post_id'], $data['author_id'], $data['content']))
     throw new Exception('please provide post_id, author_id and a content');
   require_once './Controllers/Comment.controller.php';
@@ -90,7 +122,7 @@ $app->post('/api/add/comment', function($data){
   echo json_encode(['added'=>true]);
 });
 
-$app->delete('/api/comment', function($data){
+$app->post('/delete/comment', function($data){
   if(empty($data['id']))
     throw new Exception('please proivde an id');
   require_once './Controllers/Comment.controller.php';
@@ -100,7 +132,7 @@ $app->delete('/api/comment', function($data){
   echo json_encode(['deleted'=>true]);
 });
 
-$app->put('/api/comment', function($data){
+$app->post('/update/comment', function($data){
   if(empty($data['id']))
     throw new Exception('please provide a valid id');
 
@@ -115,21 +147,7 @@ $app->put('/api/comment', function($data){
 });
 
 // useres ---------------------------
-$app->get('/api/users', function(){
-  require_once './Controllers/User.controller.php';
-  header('content-type: application/json');
-  echo json_encode(User::fetch_all());
-});
-
-$app->get('/api/user', function($query){
-  if(empty($query['username']))
-    throw new Exception('please proivde a username');
-  require_once './Controllers/User.controller.php';
-  header('content-type: application/json');
-  echo json_encode(User::fetch_by_username($query['username']));
-});
-
-$app->post('/api/add/user', function($data){
+$app->post('/add/user', function($data){
   if(!isset($data['username'], $data['email'], $data['password']))
     throw new Exception('please provide post_id, author_id and a content');
   require_once './Controllers/User.controller.php';
@@ -139,7 +157,7 @@ $app->post('/api/add/user', function($data){
   echo json_encode(['added'=>true]);
 });
 
-$app->delete('/api/user', function($data){
+$app->post('/delete/user', function($data){
   if(empty($data['id']))
     throw new Exception('please proivde an id');
   require_once './Controllers/User.controller.php';
@@ -149,7 +167,7 @@ $app->delete('/api/user', function($data){
   echo json_encode(['deleted'=>true]);
 });
 
-$app->put('/api/user', function($data){
+$app->post('/update/user', function($data){
   if(empty($data['id']))
     throw new Exception('please provide a valid id');
 
