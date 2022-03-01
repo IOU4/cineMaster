@@ -1,7 +1,15 @@
 <?php 
+session_start();
 require_once './Controllers/Global.controller.php';
 
 $app = new Controller();
+
+$app->get('/is_logged', function() {
+  if(isset($_SESSION['user_id']))
+    echo json_encode(['isLogged'=>true]);
+  else 
+    echo json_encode(['isLogged'=>false]);
+});
 
 $app->post('/login', function($data) {
   if(isset($data['username'], $data['password']))
@@ -19,7 +27,7 @@ $app->post('/singup', function($data) {
   $login->singup();
 });
 
-$app->get('', function() {
+$app->get('/', function() {
   header('content-type: application/json');
   echo json_encode(['message'=>'welcome to CineMaster API']);
 });
@@ -69,9 +77,6 @@ $app->get('/comments/post', function($query){
   header('content-type: application/json');
   echo json_encode(Comment::fetch_by_post($query['post_id']));
 });
-
-if(empty($_SESSION['user_id']))
-  die(json_encode(['logged'=>false]));
 
 $app->post('/add/post', function($data) {
   if(!isset($data['author_id'], $data['title'], $data['description'], $data['likes_count'])) 

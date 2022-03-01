@@ -13,13 +13,16 @@ class Controller {
     $query = [];
     if(isset($parsed_url['query']))
       parse_str($parsed_url['query'], $query);
-    if('/api/'.$route == $parsed_url['path'] && $this->method == 'GET') 
+    if('/api'.$route == $parsed_url['path'] && $this->method == 'GET') 
         $callable($query);
   }
 
   function post($route, $callable) {
     $path = parse_url($this->uri)['path'];
-    if('/api/'.$route == $path && $this->method == 'POST') {
+    if('/api'.$route == $path && $this->method == 'POST') {
+      if(empty($_SESSION['user_id']))
+        die(json_encode(['logged'=>false]));
+
       $data = $_POST;
       $callable($data);
     }
