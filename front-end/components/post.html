@@ -33,33 +33,36 @@
       </div>
       <div style="height: 55vh"></div>
       <div id="post-content">
-        <h1 id="title" class="text-5xl font-bold">Shutter Island</h1>
+        <h1 id="title" class="text-5xl font-bold"></h1>
         <a class="flex gap-4 justify-start items-center my-2">
           <div class="avatar">
             <div id="user-avatar" class="w-16 rounded-full">
               <img src="https://api.lorem.space/image/face?hash=64318" />
             </div>
           </div>
-          <p id="username">Imad ouchaib</p>
+          <p id="username"></p>
         </a>
-        <p id="created_at">2022-02-22 13:44:55</p>
-        <div id="catergory" class="my-4 badge badge-success">Movie</div>
-        <p id="description" class="my-2">
-          Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda
-          Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda
-        </p>
-        <form class="mt-4 input-group">
+        <p id="created_at"></p>
+        <div id="catergory" class="my-4 badge badge-success">Action</div>
+        <p id="description" class="my-2"></p>
+        <form id="add-comment" class="mt-4 input-group">
           <input
             type="text"
             name="content"
             placeholder="add a comment ..."
             class="input input-bordered"
           />
-          <input type="submit" value="Done" class="btn" />
+          <input
+            value="Add"
+            type="button"
+            class="btn"
+            onclick="submitNewComment()"
+          />
         </form>
-        <div class="divider">Comments</div>
+        <div class="divider"></div>
 
         <!-- comments -->
+        <div id="comments"></div>
       </div>
     </main>
     <footer class="items-center p-4 footer bg-neutral text-neutral-content">

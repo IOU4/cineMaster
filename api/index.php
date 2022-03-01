@@ -81,10 +81,8 @@ $app->get('/api/comments/post', function($query){
 });
 
 $app->post('/api/add/comment', function($data){
-  if(!isset($data['post_id'], $data['author_id'], $data['content'])){
-    var_dump($data);
+  if(!isset($data['post_id'], $data['author_id'], $data['content']))
     throw new Exception('please provide post_id, author_id and a content');
-  }
   require_once './Controllers/Comment.controller.php';
   $comment = new Comment($data['author_id'], $data['post_id'], $data['content']);
   $comment->add();
