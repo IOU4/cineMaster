@@ -69,6 +69,7 @@ const printUserProfile = async (callable, username) => {
   name.setAttribute("value", user.username);
 };
 
-let username = new URLSearchParams(window.location.search).get("user");
+let username =
+  new URLSearchParams(window.location.search).get("user") || "jawad";
 printUserProfile(getUserProfile, username);
 printUserPosts(getUserPosts, username);

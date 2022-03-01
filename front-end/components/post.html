@@ -45,25 +45,18 @@
         <p id="created_at"></p>
         <div id="catergory" class="my-4 badge badge-success">Action</div>
         <p id="description" class="my-2"></p>
-        <form id="add-comment" class="mt-4 input-group">
-          <input
-            type="text"
-            name="content"
-            placeholder="add a comment ..."
-            class="input input-bordered"
-          />
-          <input
-            value="Add"
-            type="button"
-            class="btn"
-            onclick="submitNewComment()"
-          />
-        </form>
-        <div class="divider"></div>
-
-        <!-- comments -->
-        <div id="comments"></div>
       </div>
+      <form id="add-comment" class="mt-4 input-group">
+        <input
+          type="text"
+          name="content"
+          placeholder="add a comment ..."
+          class="input input-bordered"
+        />
+        <input value="Add" type="submit" class="btn" />
+      </form>
+      <div class="divider"></div>
+      <div id="comments"></div>
     </main>
     <footer class="items-center p-4 footer bg-neutral text-neutral-content">
       <div class="grid-flow-col items-center">

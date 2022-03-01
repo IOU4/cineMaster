@@ -11,8 +11,9 @@ document
   .querySelector('input[name="author_id"]')
   .setAttribute("value", getId());
 
-submitNewPost = async () => {
-  const form = new FormData(document.getElementById("add-post"));
+const submitNewPost = async (e) => {
+  e.preventDefault();
+  const form = new FormData(e.target);
   fetch("http://localhost/api/add/post", {
     method: "POST",
     body: form,
@@ -22,7 +23,7 @@ submitNewPost = async () => {
       console.log(data);
       document.getElementById("posts").innerHTML = "";
       printPosts(getPosts);
-      window.location = "#add-post";
+      window.location = "#posts";
     })
     .catch((error) => {
       console.error("Error:", error);
@@ -80,4 +81,5 @@ const printPosts = async (callable) => {
   });
 };
 
+document.getElementById("add-post").onsubmit = submitNewPost;
 printPosts(getPosts);

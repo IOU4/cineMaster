@@ -1,5 +1,5 @@
 const url = window.location.search;
-const postId = new URLSearchParams(url).get("id");
+const postId = new URLSearchParams(url).get("id") || "1";
 
 let getPost = async (postId) => {
   const post = await fetch(`http://localhost/api/post?id=${postId}`)
@@ -46,8 +46,9 @@ let printPost = async (postId, callable) => {
   printComments(post);
 };
 
-const submitNewComment = async () => {
-  const form = new FormData(document.getElementById("add-comment"));
+const submitNewComment = async (e) => {
+  e.preventDefault();
+  const form = new FormData(e.target);
   form.append("author_id", getUserIdFromCookies());
   form.append("post_id", postId);
   fetch("http://localhost/api/add/comment", {
@@ -62,4 +63,5 @@ const submitNewComment = async () => {
     .catch((err) => console.error(err));
 };
 
+document.getElementById("add-comment").onsubmit = submitNewComment;
 printPost(postId, getPost);
