@@ -28,15 +28,20 @@ const login = async (e) => {
     .then((res) => res.json())
     .catch((err) => console.error(err));
   if (res?.logged) window.location = "posts.html";
-  else document.getElementById("alert").classList.remove("hidden");
+  else document.getElementById("login-alert").classList.remove("hidden");
 };
 
 const singup = async (e) => {
   e.preventDefault();
-  const res = await fetch("http://localhost/api/singup")
+  const form = new FormData(e.target);
+  const res = await fetch("http://localhost/api/singup", {
+    method: "POST",
+    body: form,
+  })
     .then((res) => res.json())
     .catch((err) => console.error(err));
-  console.log(res);
+  if (res?.logged) window.location.reload();
+  else document.getElementById("singup-alert").classList.remove("hidden");
 };
 
 const init = async () => {

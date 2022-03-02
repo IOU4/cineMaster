@@ -93,6 +93,9 @@
       id="singup"
       class="hidden flex-col min-h-screen lg:flex-row-reverse hero-content"
     >
+      <div id="singup-alert" class="hidden text-center alert alert-error">
+        username or email already taken
+      </div>
       <div class="text-center lg:text-left">
         <h1 class="text-5xl font-bold">Create New Account!</h1>
         <p class="py-6">
@@ -109,7 +112,7 @@
             <input
               type="name"
               placeholder="username"
-              name="email"
+              name="username"
               class="input input-bordered"
             />
           </div>
@@ -130,15 +133,17 @@
             </label>
             <input
               type="password"
-              placeholder="email"
+              placeholder="password"
               name="password"
               class="input input-bordered"
             />
           </div>
           <div class="gap-2 mt-6 form-control">
-            <button class="btn btn-primary" name="singup" type="submit">
-              Create Account
-            </button>
+            <input
+              class="btn btn-primary"
+              type="submit"
+              value="Create Account"
+            />
             <a class="text-center link link-hover" onclick="showLogin()"
               >Already have an account ?</a
             >

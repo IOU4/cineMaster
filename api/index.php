@@ -6,7 +6,7 @@ require_once './Controllers/Global.controller.php';
 $app = new Controller();
 
 $app->get('/is_logged', function() {
-  if(isset($_SESSION['user_id']))
+  if(!empty($_SESSION['user_id']))
     echo json_encode(['isLogged'=>true]);
   else 
     echo json_encode(['isLogged'=>false]);
@@ -21,8 +21,8 @@ $app->post('/login', function($data) {
 });
 
 $app->post('/singup', function($data) {
-  if(isset($data['username'], $data['email'], $data['password']))
-    throw new Exception('message not enough data provided');
+  if(!isset($data['username'], $data['email'], $data['password']))
+    throw new Exception('not enough data provided');
   require_once "./Controllers/User.controller.php";
   $login = new User($data['username'], $data['email'], $data['password']);
   $login->singup();

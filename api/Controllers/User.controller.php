@@ -33,7 +33,12 @@ class User {
   function singup() {
     $params = array($this->username, $this->email, $this->password);
     // TODO: check for duplication
-    $this->model->singup($params);
+    try {
+      $this->model->singup($params);
+      echo json_encode(['logged'=>true]);
+    } catch(Exception) {
+      echo json_encode(['logged'=>false]);
+    }
   }
 
   function add() {
