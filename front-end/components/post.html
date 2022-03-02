@@ -45,16 +45,20 @@
         <p id="created_at"></p>
         <div id="catergory" class="my-4 badge badge-success">Action</div>
         <p id="description" class="my-2"></p>
+        <div id="alert" class="hidden alert alert-warning">
+          please login to add a comment
+          <button class="btn btn-ghost btn-sm">login</button>
+        </div>
+        <form id="add-comment" class="hidden mt-4 input-group">
+          <input
+            type="text"
+            name="content"
+            placeholder="add a comment ..."
+            class="input input-bordered"
+          />
+          <input value="Add" type="submit" class="btn" />
+        </form>
       </div>
-      <form id="add-comment" class="mt-4 input-group">
-        <input
-          type="text"
-          name="content"
-          placeholder="add a comment ..."
-          class="input input-bordered"
-        />
-        <input value="Add" type="submit" class="btn" />
-      </form>
       <div class="divider"></div>
       <div id="comments"></div>
     </main>

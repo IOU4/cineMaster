@@ -37,7 +37,7 @@ class PostModel extends Model {
   }
 
   function fetch_by_user($author) {
-    $query = 'select posts.id, posts.title, posts.description, posts.created_at, posts.cover, users.username from posts join users on posts.author_id = users.id where users.username = ?';
+    $query = 'select posts.id, posts.title, posts.description, posts.created_at, posts.cover, users.username from posts join users on posts.author_id = users.id where users.username = ? order by id desc';
     $stmnt = $this->execStatement($query, [$author]);
     return $stmnt->get_result()->fetch_all(MYSQLI_ASSOC);
   }

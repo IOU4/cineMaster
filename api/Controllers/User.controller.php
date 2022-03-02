@@ -22,10 +22,12 @@ class User {
     $params = array($this->username);
     $res = $this->model->login($params);
     if(isset($res['password']) && $this->password == $res['password']) {
-      session_start();
       $_SESSION['user_id'] = $res['id'];
       $_SESSION['username'] = $this->username;
+      echo json_encode(['logged'=>true]);
     }
+    else 
+      echo json_encode(['logged'=>false]);
   }
   
   function singup() {

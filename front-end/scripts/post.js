@@ -63,5 +63,21 @@ const submitNewComment = async (e) => {
     .catch((err) => console.error(err));
 };
 
-document.getElementById("add-comment").onsubmit = submitNewComment;
-printPost(postId, getPost);
+const isLogged = async () => {
+  const status = await fetch("http://localhost/api/is_logged")
+    .then((res) => res.json())
+    .then((data) => data.isLogged)
+    .catch((err) => console.error(err));
+  return status;
+};
+
+const init = async () => {
+  const stat = await isLogged();
+  if (stat) {
+    document.getElementById("add-comment").classList.remove("hidden");
+    document.getElementById("add-comment").onsubmit = submitNewComment;
+  } else document.getElementById("alert").classList.remove("hidden");
+  printPost(postId, getPost);
+};
+
+init();

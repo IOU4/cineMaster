@@ -20,7 +20,7 @@ class Controller {
   function post($route, $callable) {
     $path = parse_url($this->uri)['path'];
     if('/api'.$route == $path && $this->method == 'POST') {
-      if(empty($_SESSION['user_id']))
+      if(empty($_SESSION['user_id']) && $route != '/login' && $route != '/singup')
         die(json_encode(['logged'=>false]));
 
       $data = $_POST;

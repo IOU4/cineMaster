@@ -1,15 +1,10 @@
-document.cookie = "username=jawad;domain=localhost;path=/front-end";
-document.cookie = "user_id=2";
-
-getId = () =>
-  document.cookie
-    .split("; ")
-    .find((e) => e.startsWith("user_id="))
-    .split("=")[1];
-
-document
-  .querySelector('input[name="author_id"]')
-  .setAttribute("value", getId());
+const isLogged = async () => {
+  const status = await fetch("http://localhost/api/is_logged")
+    .then((res) => res.json())
+    .then((data) => data.isLogged)
+    .catch((err) => console.error(err));
+  return status;
+};
 
 const submitNewPost = async (e) => {
   e.preventDefault();
@@ -81,5 +76,13 @@ const printPosts = async (callable) => {
   });
 };
 
-document.getElementById("add-post").onsubmit = submitNewPost;
-printPosts(getPosts);
+const init = async () => {
+  const stat = await isLogged();
+  if (stat) {
+    document.getElementById("add-post").classList.remove("hidden");
+    document.getElementById("add-post").onsubmit = submitNewPost;
+  } else document.getElementById("alert").classList.remove("hidden");
+  printPosts(getPosts);
+};
+
+init();

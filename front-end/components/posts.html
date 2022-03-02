@@ -42,7 +42,11 @@
       </div>
     </nav>
     <main class="grid gap-6 place-items-center py-24 px-4">
-      <form id="add-post" class="w-11/12 lg:w-9/12">
+      <div id="alert" class="hidden alert alert-warning">
+        please login to add post
+        <button class="btn btn-ghost btn-sm">login</button>
+      </div>
+      <form id="add-post" class="hidden w-11/12 lg:w-9/12">
         <h1 class="text-2xl text-center">Add Post :</h1>
         <div class="form-control">
           <label class="label">
@@ -101,7 +105,7 @@
           />
         </div>
       </form>
-      <div class="w-11/12 text-2xl lg:w-9/12 divider">Posts:</div>
+      <div class="mt-auto w-11/12 text-2xl lg:w-9/12 divider">Posts:</div>
       <div id="posts" class="grid gap-8 place-items-center w-full"></div>
     </main>
     <footer class="items-center p-4 footer bg-neutral text-neutral-content">

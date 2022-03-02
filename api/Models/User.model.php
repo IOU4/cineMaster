@@ -4,7 +4,7 @@ require_once './Models/Database.php';
 class UserModel extends Model {
 
   function login($params) {
-    $query = "select password from users where username = ?";
+    $query = "select id, password from users where username = ?";
     $stmnt = $this->execStatement($query, $params); 
     return $stmnt->get_result()->fetch_assoc();
   }
