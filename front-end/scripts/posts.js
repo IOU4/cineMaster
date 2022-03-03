@@ -1,9 +1,13 @@
-const isLogged = async () => {
-  const status = await fetch("http://localhost/api/is_logged")
+const isLogged = () => {
+  return fetch("http://localhost/api/is_logged")
     .then((res) => res.json())
     .then((data) => data.isLogged)
     .catch((err) => console.error(err));
-  return status;
+};
+
+const logout = async () => {
+  await fetch("http://localhost/api/logout");
+  window.location = "Athentication.html";
 };
 
 const submitNewPost = async (e) => {
@@ -32,10 +36,9 @@ const toggleTheme = () => {
 };
 
 const getPosts = async () => {
-  const posts = await fetch("http://localhost/api/posts")
+  return await fetch("http://localhost/api/posts")
     .then((res) => res.json())
     .catch((err) => console.error(err));
-  return posts;
 };
 
 const printPosts = async (callable) => {

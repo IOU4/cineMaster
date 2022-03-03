@@ -44,7 +44,16 @@ const singup = async (e) => {
   else document.getElementById("singup-alert").classList.remove("hidden");
 };
 
+const isLogged = () => {
+  return fetch("http://localhost/api/is_logged")
+    .then((res) => res.json())
+    .then((data) => data.isLogged)
+    .catch((err) => console.error(err));
+};
+
 const init = async () => {
+  const stat = await isLogged();
+  if (stat) window.location = "posts.html";
   document.getElementById("login-form").onsubmit = login;
   document.getElementById("singup-form").onsubmit = singup;
 };

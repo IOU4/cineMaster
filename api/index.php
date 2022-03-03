@@ -14,7 +14,7 @@ $app->get('/is_logged', function() {
 
 $app->post('/login', function($data) {
   if(!isset($data['username'], $data['password']))
-    throw new Exception('message not enough data provided');
+    die(json_encode((['error' => 'no enough data provided'])));
   require_once "./Controllers/User.controller.php";
   $login = new User($data['username'], null, $data['password']);
   $login->login();
@@ -22,10 +22,15 @@ $app->post('/login', function($data) {
 
 $app->post('/singup', function($data) {
   if(!isset($data['username'], $data['email'], $data['password']))
-    throw new Exception('not enough data provided');
+    die(json_encode((['error' => 'no enough data provided'])));
   require_once "./Controllers/User.controller.php";
   $login = new User($data['username'], $data['email'], $data['password']);
   $login->singup();
+});
+
+$app->get('/logout', function(){
+  session_destroy();
+  echo json_encode(['logged_out'=>true]);
 });
 
 $app->get('/', function() {
