@@ -21,8 +21,13 @@ class Comment {
   }
 
   function add() {
-    $params = array($this->post_id, $this->author_id, $this->content);
-    $this->id = $this->model->add($params);
+    try {
+      $params = array($this->post_id, $this->author_id, $this->content);
+      $this->id = $this->model->add($params);
+      echo json_encode(['added'=>true]);
+    } catch (Throwable) {
+      echo json_encode(['added'=>false]);
+    }
   }
 
   function update($params) {

@@ -119,7 +119,6 @@ $app->post('/add/comment', function($data){
   require_once './Controllers/Comment.controller.php';
   $comment = new Comment($_SESSION['user_id'], $data['post_id'], $data['content']);
   $comment->add();
-  echo json_encode(['added'=>true]);
 });
 
 $app->post('/delete/comment', function($data){

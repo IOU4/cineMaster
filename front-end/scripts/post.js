@@ -46,7 +46,6 @@ const toggleTheme = () => {
 const submitNewComment = async (e) => {
   e.preventDefault();
   const form = new FormData(e.target);
-  form.append("author_id", getUserIdFromCookies());
   form.append("post_id", postId);
   fetch("http://localhost/api/add/comment", {
     method: "POST",
@@ -92,12 +91,12 @@ const init = async () => {
   if (logged.isLogged) {
     document.getElementById("logout").innerText = "Logout";
     document.getElementById("add-comment").classList.remove("hidden");
-    document.getElementById("add-comment").onsubmit = submitNewComment;
     if (logged.username == post.username) {
       const postContent = document.querySelector("#post-content");
       postContent.innerHTML += `<div class="absolute top-2 right-2 link" onclick="deletePost(${post.id})">delete</div>`;
       postContent.innerHTML += `<div id="update" class="absolute top-8 right-2 link">update</div>`;
     }
+    document.getElementById("add-comment").onsubmit = submitNewComment;
   } else document.getElementById("alert").classList.remove("hidden");
   printPost(post);
 };
