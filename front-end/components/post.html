@@ -55,8 +55,7 @@
         ></div>
       </div>
       <div style="height: 55vh"></div>
-      <div id="post-content" class="relative">
-        <h1 id="title" class="text-5xl font-bold"></h1>
+      <form id="post-content" class="flex relative flex-col gap-2">
         <a class="flex gap-4 justify-start items-center my-2">
           <div class="avatar">
             <div id="user-avatar" class="w-16 rounded-full">
@@ -65,24 +64,25 @@
           </div>
           <p id="username"></p>
         </a>
-        <p id="created_at"></p>
-        <div id="catergory" class="my-4 badge badge-success">Action</div>
-        <p id="description" class="my-2"></p>
-        <div id="alert" class="hidden alert alert-warning">
-          please login to add a comment
-          <a href="Athentication.html" class="btn btn-ghost btn-sm">login</a>
-        </div>
-        <form id="add-comment" class="hidden mt-4 input-group">
-          <input
-            type="text"
-            name="content"
-            placeholder="add a comment ..."
-            class="input input-bordered"
-          />
-          <input value="Add" type="submit" class="btn" />
-        </form>
+        <p id="created_at" class="text-sm"></p>
+        <input name="title" class="text-5xl font-bold input" disabled />
+        <input name="description" class="my-2 input" disabled />
+        <input name="category" class="badge" disabled />
+      </form>
+      <div id="alert" class="hidden alert alert-warning">
+        please login to add a comment
+        <a href="Athentication.html" class="btn btn-ghost btn-sm">login</a>
       </div>
       <div class="divider"></div>
+      <form id="add-comment" class="hidden mt-4 input-group">
+        <input
+          type="text"
+          name="content"
+          placeholder="add a comment ..."
+          class="input input-bordered"
+        />
+        <input value="Add" type="submit" class="btn" />
+      </form>
       <div id="comments"></div>
     </main>
     <footer class="items-center p-4 footer bg-neutral text-neutral-content">

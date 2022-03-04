@@ -108,6 +108,7 @@ $app->post('/update/post', function($data) {
 
   require_once './Controllers/Post.controller.php'; 
   $post = Post::fetch_by_id($data['id']);
+  $post = new Post($post['author_id'], $post['title'], $post['description'], $post['likes_count'], $post['created_at'], $data['id']);
   $post->update($new_data);
   echo json_encode(['updated'=>true]);
 });
