@@ -1,18 +1,10 @@
-const url = window.location.search;
-const postId = new URLSearchParams(url).get("id") || "1";
+const postId = new URLSearchParams(window.location.search).get("id") || "1";
 
 let getPost = async (postId) => {
   const post = await fetch(`http://localhost/api/post?id=${postId}`)
     .then((res) => res.json())
     .catch((err) => console.error(err));
   return post;
-};
-
-const getUserIdFromCookies = () => {
-  return document.cookie
-    .split("; ")
-    .find((e) => e.startsWith("user_id="))
-    .split("=")[1];
 };
 
 const printComments = (post) => {
@@ -30,8 +22,7 @@ const printComments = (post) => {
   document.getElementById("comments").innerHTML = comments;
 };
 
-let printPost = async (postId, callable) => {
-  const post = await callable(postId);
+let printPost = (post) => {
   let author = document.getElementById("username");
   let title = document.getElementById("title");
   let description = document.getElementById("description");
@@ -44,6 +35,12 @@ let printPost = async (postId, callable) => {
   description.innerText = post.description;
   created_at.innerText = post.created_at;
   printComments(post);
+};
+
+const toggleTheme = () => {
+  const theme = document.lastChild.getAttribute("data-theme");
+  if (theme == "dark") document.lastChild.setAttribute("data-theme", "light");
+  else document.lastChild.setAttribute("data-theme", "dark");
 };
 
 const submitNewComment = async (e) => {
@@ -64,20 +61,45 @@ const submitNewComment = async (e) => {
 };
 
 const isLogged = async () => {
-  const status = await fetch("http://localhost/api/is_logged")
+  return await fetch("http://localhost/api/is_logged")
     .then((res) => res.json())
-    .then((data) => data.isLogged)
     .catch((err) => console.error(err));
-  return status;
+};
+
+const logout = async () => {
+  await fetch("http://localhost/api/logout");
+  window.location = "Athentication.html";
+};
+
+const deletePost = async (id) => {
+  let form = new FormData();
+  form.append("id", id);
+  return await fetch("http://localhost/api/delete/post", {
+    method: "POST",
+    body: form,
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      console.log(data);
+      window.location = "posts.html";
+    })
+    .catch((err) => console.error(err));
 };
 
 const init = async () => {
-  const stat = await isLogged();
-  if (stat) {
+  const logged = await isLogged();
+  const post = await getPost(postId);
+  if (logged.isLogged) {
+    document.getElementById("logout").innerText = "Logout";
     document.getElementById("add-comment").classList.remove("hidden");
     document.getElementById("add-comment").onsubmit = submitNewComment;
+    if (logged.username == post.username) {
+      const postContent = document.querySelector("#post-content");
+      postContent.innerHTML += `<div class="absolute top-2 right-2 link" onclick="deletePost(${post.id})">delete</div>`;
+      postContent.innerHTML += `<div id="update" class="absolute top-8 right-2 link">update</div>`;
+    }
   } else document.getElementById("alert").classList.remove("hidden");
-  printPost(postId, getPost);
+  printPost(post);
 };
 
 init();

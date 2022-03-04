@@ -14,7 +14,9 @@ let printUserPosts = async (callable, username) => {
   let postsContainer = document.getElementById("posts");
   posts.forEach((post) => {
     postsContainer.innerHTML += `
-    <div id="post" class="w-11/12 shadow-xl lg:w-9/12 card bg-base-200">
+    <a href="post.html?id=${
+      post.id
+    }" class="w-11/12 shadow-xl lg:w-9/12 card bg-base-200">
       <figure>
         <img src="https://api.lorem.space/image/movie?w=800&h=625" />
       </figure>
@@ -35,21 +37,12 @@ let printUserPosts = async (callable, username) => {
         <div class="justify-end card-actions">
           <div class="badge badge-outline">scince fiction</div>
         </div>
-        <form class="mt-4 input-group">
-          <input
-            type="text"
-            name="comment"
-            placeholder="add a comment ..."
-            class="input input-bordered"
-          />
-          <input type="submit" value="done" class="btn" />
-        </form>
         <div class="divider">last</div>
         <div class="text-xl">${post.comments[0]?.username || ""}</div>
         <p class="text-xs">${post.comments[0]?.created_at || ""}</p>
         <div>${post.comments[0]?.content || ""}</div>
       </div>
-    </div>
+    </a>
   `;
   });
 };
@@ -69,7 +62,27 @@ const printUserProfile = async (callable, username) => {
   name.setAttribute("value", user.username);
 };
 
-let username =
-  new URLSearchParams(window.location.search).get("user") || "jawad";
-printUserProfile(getUserProfile, username);
-printUserPosts(getUserPosts, username);
+const isLogged = async () => {
+  const logged = await fetch("http://localhost/api/is_logged")
+    .then((res) => res.json())
+    .catch((err) => console.error(err));
+  return logged;
+};
+
+const logout = async () => {
+  await fetch("http://localhost/api/logout");
+  window.location = "Athentication.html";
+};
+
+const init = async () => {
+  const logged = await isLogged();
+  const username =
+    new URLSearchParams(window.location.search).get("user") ||
+    logged.username ||
+    "jawad";
+  if (logged?.isLogged) document.getElementById("logout").innerText = "Logout";
+  printUserProfile(getUserProfile, username);
+  printUserPosts(getUserPosts, username);
+};
+
+init();

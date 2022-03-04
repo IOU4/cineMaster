@@ -7,7 +7,7 @@ $app = new Controller();
 
 $app->get('/is_logged', function() {
   if(!empty($_SESSION['user_id']))
-    echo json_encode(['isLogged'=>true]);
+    echo json_encode(['isLogged'=>true, 'username'=>$_SESSION['username'], 'email'=>$_SESSION['email']]);
   else 
     echo json_encode(['isLogged'=>false]);
 });
@@ -91,7 +91,7 @@ $app->post('/delete/post', function($data){
   if(!isset($data['id']))
     throw new Exception('please provide a valid id');
   require_once './Controllers/Post.controller.php'; 
-  $post = Post::fetch_by_id($data['id']);
+  $post = new Post(null, null, null, null, null, $data['id']);
   $post->delete();
   echo json_encode(['deleted'=>true]);
 });

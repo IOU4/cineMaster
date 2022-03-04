@@ -80,8 +80,9 @@ const printPosts = async (callable) => {
 };
 
 const init = async () => {
-  const stat = await isLogged();
-  if (stat) {
+  const logged = await isLogged();
+  if (logged) {
+    document.getElementById("logout").innerText = "Logout";
     document.getElementById("add-post").classList.remove("hidden");
     document.getElementById("add-post").onsubmit = submitNewPost;
   } else document.getElementById("alert").classList.remove("hidden");

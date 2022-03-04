@@ -24,6 +24,7 @@ class User {
     if(isset($res['password']) && $this->password == $res['password']) {
       $_SESSION['user_id'] = $res['id'];
       $_SESSION['username'] = $this->username;
+      $_SESSION['email'] = $this->email;
       echo json_encode(['logged'=>true]);
     }
     else 
