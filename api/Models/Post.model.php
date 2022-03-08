@@ -4,9 +4,8 @@ require_once './Models/Database.php';
 class PostModel extends Model {
 
   function add($params) {
-    $query = 'insert into posts (title, description, likes_count, author_id) values(?, ?, ?, ?)';
+    $query = 'insert into posts (title, description, likes_count, author_id, cover) values(?, ?, ?, ?, ?)';
     $this->execStatement($query, $params);
-    return $this->execStatement('select last_insert_id() as id')->get_result()->fetch_assoc()['id'];
   }
   
   function update($params) {

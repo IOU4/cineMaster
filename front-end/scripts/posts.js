@@ -1,7 +1,6 @@
-const isLogged = () => {
-  return fetch("http://localhost/api/is_logged")
+const isLogged = async () => {
+  return await fetch("http://localhost/api/is_logged")
     .then((res) => res.json())
-    .then((data) => data.isLogged)
     .catch((err) => console.error(err));
 };
 
@@ -81,7 +80,7 @@ const printPosts = async (callable) => {
 
 const init = async () => {
   const logged = await isLogged();
-  if (logged) {
+  if (logged.isLogged) {
     document.getElementById("logout").innerText = "Logout";
     document.getElementById("add-post").classList.remove("hidden");
     document.getElementById("add-post").onsubmit = submitNewPost;

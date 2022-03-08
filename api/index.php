@@ -91,7 +91,7 @@ $app->post('/delete/post', function($data){
   if(!isset($data['id']))
     throw new Exception('please provide a valid id');
   require_once './Controllers/Post.controller.php'; 
-  $post = new Post(null, null, null, null, null, $data['id']);
+  $post = new Post(null, null, null, null, null, null, $data['id']);
   $post->delete();
   echo json_encode(['deleted'=>true]);
 });
@@ -108,7 +108,7 @@ $app->post('/update/post', function($data) {
 
   require_once './Controllers/Post.controller.php'; 
   $post = Post::fetch_by_id($data['id']);
-  $post = new Post($post['author_id'], $post['title'], $post['description'], $post['likes_count'], $post['created_at'], $data['id']);
+  $post = new Post(null, null, null, null, null, null, $data['id']);
   $post->update($new_data);
   echo json_encode(['updated'=>true]);
 });

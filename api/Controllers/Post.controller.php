@@ -12,21 +12,24 @@ class Post {
   private $created_at;
   private $model;
 
-  function __construct($author_id, $title = '', $description = '', $likes_count = 1, $created_at = null, $id = null) {
+  function __construct($author_id, $title = '', $description = '', $likes_count = 1, $cover = '', $created_at = null, $id = null) {
 
     $this->id = $id;
     $this->title = $title;
     $this->description = $description;
     $this->likes_count = $likes_count;
     $this->author_id = $author_id;
-    $this->cover = 'image';
+    $this->cover = $cover;
     $this->created_at = $created_at;
     $this->model = new PostModel();
     
   }
 
   function add() {
-    $params = array($this->title, $this->description, $this->likes_count, $this->author_id);
+    if(!empty($_FILES['cover']['name'])) {
+      $this->cover = $_FILES['cover']['name'];
+    }
+    $params = array($this->title, $this->description, $this->likes_count, $this->author_id, $this->cover);
     $this->id = $this->model->add($params);
   }
 
