@@ -78,13 +78,12 @@ $app->get('/comments/post', function($query){
 });
 
 $app->post('/add/post', function($data) {
-  if(!isset($data['title'], $data['description'], $data['likes_count'])) 
+  if(!isset($data['title'], $data['description'])) 
     throw new Exception("please provide a valid post id");
 
   require_once './Controllers/Post.controller.php'; 
-  $post = new Post($_SESSION['user_id'], $data['title'], $data['description'], $data['likes_count']);
+  $post = new Post($_SESSION['user_id'], $data['title'], $data['description']);
   $post->add();
-  echo json_encode(['added'=>true]);
 });
 
 $app->post('/delete/post', function($data){
@@ -168,11 +167,9 @@ $app->post('/update/user', function($data){
     throw new Exception('please provide a valid id');
 
   $new_data = [];
-
   if(isset($data['username'])) $new_data['username'] = $data['username'];
   if(isset($data['email'])) $new_data['email'] = $data['email'];
   if(isset($data['password'])) $new_data['password'] = $data['password'];
-
   require_once './Controllers/User.controller.php'; 
   $user = User::fetch_by_id($data['id']);
   $user->update($new_data);
