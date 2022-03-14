@@ -1,2 +1,4 @@
 *.css
 front-end/tailwind*
+api/uploaded
+logs/

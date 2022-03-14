@@ -3,14 +3,14 @@ let toggleTheme = () => {
   if (theme == "dark") document.lastChild.setAttribute("data-theme", "light");
   else document.lastChild.setAttribute("data-theme", "dark");
 };
+
 let getUserPosts = async (username) => {
-  let posts = await fetch(`http://localhost/api/posts?author=${username}`)
+  let posts = await fetch(`/api/posts?author=${username}`)
     .then((res) => res.json())
     .catch((err) => console.error(err));
   return posts;
 };
-let printUserPosts = async (callable, username) => {
-  const posts = await callable(username);
+let printUserPosts = (posts) => {
   let postsContainer = document.getElementById("posts");
   posts.forEach((post) => {
     postsContainer.innerHTML += `
@@ -18,7 +18,7 @@ let printUserPosts = async (callable, username) => {
       post.id
     }" class="w-11/12 shadow-xl lg:w-9/12 card bg-base-200">
       <figure>
-        <img src="https://api.lorem.space/image/movie?w=800&h=625" />
+        <img src="/api/uploaded/${post.cover ? post.cover : "not_found.jpg"}"/>
       </figure>
       <div class="card-body">
       <div class="flex gap-4 items-center">
@@ -48,29 +48,27 @@ let printUserPosts = async (callable, username) => {
 };
 
 const getUserProfile = async (username) => {
-  const user = fetch(`http://localhost/api/user?username=${username}`)
+  return (user = await fetch(`/api/user?username=${username}`)
     .then((res) => res.json())
-    .catch((err) => console.error(err));
-  return user;
+    .catch((err) => console.error(err)));
 };
 
-const printUserProfile = async (callable, username) => {
+const printUserProfile = async (user) => {
   let name = document.querySelector("input[name='username']");
   let email = document.querySelector("input[name='email']");
-  const user = await callable(username);
   email.setAttribute("value", user.email);
   name.setAttribute("value", user.username);
 };
 
 const isLogged = async () => {
-  const logged = await fetch("http://localhost/api/is_logged")
+  const logged = await fetch("/api/is_logged")
     .then((res) => res.json())
     .catch((err) => console.error(err));
   return logged;
 };
 
 const logout = async () => {
-  await fetch("http://localhost/api/logout");
+  await fetch("/api/logout");
   window.location = "Athentication.html";
 };
 
@@ -80,9 +78,11 @@ const init = async () => {
     new URLSearchParams(window.location.search).get("user") ||
     logged.username ||
     "jawad";
+  const profile = await getUserProfile(username);
+  const users = await getUserPosts(username);
   if (logged?.isLogged) document.getElementById("logout").innerText = "Logout";
-  printUserProfile(getUserProfile, username);
-  printUserPosts(getUserPosts, username);
+  printUserProfile(profile);
+  printUserPosts(users);
 };
 
 init();

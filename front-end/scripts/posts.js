@@ -1,26 +1,26 @@
 const isLogged = async () => {
-  return await fetch("http://localhost/api/is_logged")
+  return await fetch("/api/is_logged")
     .then((res) => res.json())
     .catch((err) => console.error(err));
 };
 
 const logout = async () => {
-  await fetch("http://localhost/api/logout");
+  await fetch("/api/logout");
   window.location = "Athentication.html";
 };
 
 const submitNewPost = async (e) => {
   e.preventDefault();
   const form = new FormData(e.target);
-  fetch("http://localhost/api/add/post", {
+  fetch("/api/add/post", {
     method: "POST",
     body: form,
   })
     .then((response) => response.json())
-    .then((data) => {
-      console.log(data);
+    .then(async (data) => {
       document.getElementById("posts").innerHTML = "";
-      printPosts(getPosts);
+      const posts = await getPosts();
+      printPosts(posts);
       window.location = "#posts";
     })
     .catch((error) => {
@@ -31,17 +31,17 @@ const submitNewPost = async (e) => {
 const toggleTheme = () => {
   const theme = document.lastChild.getAttribute("data-theme");
   if (theme == "dark") document.lastChild.setAttribute("data-theme", "light");
-  else document.lastChild.setAttribute("data-theme", "dark");
+  else if (theme == "light")
+    document.lastChild.setAttribute("data-theme", "dark");
 };
 
 const getPosts = async () => {
-  return await fetch("http://localhost/api/posts")
+  return await fetch("/api/posts")
     .then((res) => res.json())
     .catch((err) => console.error(err));
 };
 
-const printPosts = async (callable) => {
-  const posts = await callable();
+const printPosts = (posts) => {
   let postsContainer = document.getElementById("posts");
   posts.forEach((post) => {
     postsContainer.innerHTML += `
@@ -49,8 +49,8 @@ const printPosts = async (callable) => {
           post.id
         }" id="post" class="w-11/12 shadow-xl lg:w-9/12 card bg-base-200">
           <figure>
-            <img src="${
-              post.cover || "https://api.lorem.space/image/movie?w=800&h=625"
+            <img src="/api/uploaded/${
+              post.cover ? post.cover : "not_found.jpg"
             }"/>
           </figure>
           <div class="card-body">
@@ -80,12 +80,13 @@ const printPosts = async (callable) => {
 
 const init = async () => {
   const logged = await isLogged();
+  const posts = await getPosts();
   if (logged.isLogged) {
     document.getElementById("logout").innerText = "Logout";
     document.getElementById("add-post").classList.remove("hidden");
     document.getElementById("add-post").onsubmit = submitNewPost;
   } else document.getElementById("alert").classList.remove("hidden");
-  printPosts(getPosts);
+  printPosts(posts);
 };
 
 init();

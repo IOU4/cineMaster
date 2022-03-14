@@ -12,7 +12,7 @@ class Post {
   private $created_at;
   private $model;
 
-  function __construct($author_id, $title = '', $description = '', $likes_count = 1, $cover = '', $created_at = null, $id = null) {
+  function __construct($author_id, $title = '', $description = '', $likes_count = 0, $cover = '', $created_at = null, $id = null) {
 
     $this->id = $id;
     $this->title = $title;
@@ -27,10 +27,12 @@ class Post {
 
   function add() {
     if(!empty($_FILES['cover']['name'])) {
-      $this->cover = $_FILES['cover']['name'];
+      $this->cover = basename($_FILES['cover']['full_path']);
+      move_uploaded_file($_FILES['cover']['tmp_name'], '/home/emadou/Work/CineMaster/api/uploaded/'.$this->cover);
     }
     $params = array($this->title, $this->description, $this->likes_count, $this->author_id, $this->cover);
     $this->id = $this->model->add($params);
+    echo json_encode(['added'=>true]);
   }
 
   function delete() {

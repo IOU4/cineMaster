@@ -23,7 +23,7 @@ class PostModel extends Model {
   }
   
   function fetch_all() {
-    $query = 'select posts.id, posts.title, posts.description, posts.created_at, users.username from posts join users on posts.author_id = users.id order by id desc'; 
+    $query = 'select posts.id, posts.title, posts.description, posts.cover, posts.created_at, users.username from posts join users on posts.author_id = users.id order by id desc'; 
     $stmnt = $this->execStatement($query);
     $result = $stmnt->get_result();
     return $result->fetch_all(MYSQLI_ASSOC);

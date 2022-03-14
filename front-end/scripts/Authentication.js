@@ -21,7 +21,7 @@ let toggleTheme = () => {
 const login = async (e) => {
   e.preventDefault();
   const form = new FormData(e.target);
-  const res = await fetch("http://localhost/api/login", {
+  const res = await fetch("/api/login", {
     method: "POST",
     body: form,
   })
@@ -34,7 +34,7 @@ const login = async (e) => {
 const singup = async (e) => {
   e.preventDefault();
   const form = new FormData(e.target);
-  const res = await fetch("http://localhost/api/singup", {
+  const res = await fetch("/api/singup", {
     method: "POST",
     body: form,
   })
@@ -45,7 +45,7 @@ const singup = async (e) => {
 };
 
 const isLogged = () => {
-  return fetch("http://localhost/api/is_logged")
+  return fetch("/api/is_logged")
     .then((res) => res.json())
     .then((data) => data.isLogged)
     .catch((err) => console.error(err));

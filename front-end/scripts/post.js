@@ -1,7 +1,7 @@
 const postId = new URLSearchParams(window.location.search).get("id") || "1";
 
 let getPost = async (postId) => {
-  const post = await fetch(`http://localhost/api/post?id=${postId}`)
+  const post = await fetch(`/api/post?id=${postId}`)
     .then((res) => res.json())
     .catch((err) => console.error(err));
   return post;
@@ -32,6 +32,7 @@ let printPost = (post, username, isLogged) => {
   let description = document.querySelector("input[name='description']");
   let created_at = document.getElementById("created_at");
   let category = document.querySelector("input[name='category']");
+  let cover = document.getElementById("cover");
   document
     .querySelector("#post-content a")
     .setAttribute("href", `user.html?user=${post.username}`);
@@ -40,7 +41,10 @@ let printPost = (post, username, isLogged) => {
   description.value = post.description;
   created_at.innerText = post.created_at;
   category.value = "Action";
-
+  cover.setAttribute(
+    "style",
+    `background-image: url(http://localhost/api/uploaded/${post.cover});`
+  );
   if (isLogged && post.username == username) {
     const postContent = document.getElementById("post-content");
     let deleteDiv = document.createElement("div");
@@ -65,7 +69,7 @@ const submitNewComment = async (e) => {
   e.preventDefault();
   const form = new FormData(e.target);
   form.append("post_id", postId);
-  fetch("http://localhost/api/add/comment", {
+  fetch("/api/add/comment", {
     method: "POST",
     body: form,
   })
@@ -79,20 +83,20 @@ const submitNewComment = async (e) => {
 };
 
 const isLogged = async () => {
-  return await fetch("http://localhost/api/is_logged")
+  return await fetch("/api/is_logged")
     .then((res) => res.json())
     .catch((err) => console.error(err));
 };
 
 const logout = async () => {
-  await fetch("http://localhost/api/logout");
+  await fetch("/api/logout");
   window.location = "Athentication.html";
 };
 
 const deletePost = async (id) => {
   let form = new FormData();
   form.append("id", id);
-  return await fetch("http://localhost/api/delete/post", {
+  return await fetch("/api/delete/post", {
     method: "POST",
     body: form,
   })
@@ -120,7 +124,7 @@ const updatePost = async (id) => {
     e.preventDefault();
     let newForm = new FormData(form);
     newForm.append("id", id);
-    await fetch("http://localhost/api/update/post", {
+    await fetch("/api/update/post", {
       method: "POST",
       body: newForm,
     })
@@ -138,7 +142,7 @@ const updatePost = async (id) => {
 const deleteComment = async (id) => {
   let form = new FormData();
   form.append("id", id);
-  return await fetch("http://localhost/api/delete/comment", {
+  return await fetch("/api/delete/comment", {
     method: "POST",
     body: form,
   })
@@ -163,7 +167,7 @@ const updateComment = async (id) => {
     e.preventDefault();
     let newForm = new FormData(form);
     newForm.append("id", id);
-    await fetch("http://localhost/api/update/comment", {
+    await fetch("/api/update/comment", {
       method: "POST",
       body: newForm,
     })
