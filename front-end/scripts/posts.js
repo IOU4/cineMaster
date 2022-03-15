@@ -31,8 +31,8 @@ const submitNewPost = async (e) => {
 const toggleTheme = () => {
   const theme = document.lastChild.getAttribute("data-theme");
   if (theme == "dark") document.lastChild.setAttribute("data-theme", "light");
-  else if (theme == "light")
-    document.lastChild.setAttribute("data-theme", "dark");
+  else theme == "light";
+  document.lastChild.setAttribute("data-theme", "dark");
 };
 
 const getPosts = async () => {

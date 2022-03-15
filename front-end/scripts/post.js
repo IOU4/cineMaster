@@ -43,7 +43,7 @@ let printPost = (post, username, isLogged) => {
   category.value = "Action";
   cover.setAttribute(
     "style",
-    `background-image: url(http://localhost/api/uploaded/${post.cover});`
+    `background-image: url(/api/uploaded/${post.cover});`
   );
   if (isLogged && post.username == username) {
     const postContent = document.getElementById("post-content");
