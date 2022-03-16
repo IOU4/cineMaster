@@ -20,6 +20,7 @@ class Controller
         }
         if ('/api'.$route == $parsed_url['path'] && $this->method == 'GET') {
             $callable($query);
+            die();
         }
     }
 
@@ -33,6 +34,7 @@ class Controller
 
             $data = $_POST;
             $callable($data);
+            die();
         }
     }
 }

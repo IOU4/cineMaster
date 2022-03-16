@@ -17,11 +17,10 @@ const submitNewPost = async (e) => {
     body: form,
   })
     .then((response) => response.json())
-    .then(async (data) => {
+    .then(async () => {
       document.getElementById("posts").innerHTML = "";
       const posts = await getPosts();
       printPosts(posts);
-      window.location = "#posts";
     })
     .catch((error) => {
       console.error("Error:", error);
@@ -46,7 +45,7 @@ const printPosts = (posts) => {
     postsContainer.innerHTML += `
         <a href="post.html?id=${
           post.id
-        }" id="post" class="w-11/12 shadow-xl lg:w-9/12 card bg-base-200">
+        }" id="post" class="shadow-xl w-full card bg-base-200">
           <figure>
             <img src="/api/uploaded/${
               post.cover ? post.cover : "not_found.jpg"

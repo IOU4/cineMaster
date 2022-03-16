@@ -37,7 +37,7 @@ class User
         }
         $params = array($this->username);
         $res = $this->model->login($params);
-        if (isset($res['password']) && $this->password == $res['password']) {
+        if (isset($res['password']) && password_verify($this->password, $res['password'])) {
             $_SESSION['user_id'] = $res['id'];
             $_SESSION['username'] = $this->username;
             $_SESSION['email'] = $this->email;
@@ -49,7 +49,7 @@ class User
 
     public function singup()
     {
-        $params = array($this->username, $this->email, $this->password);
+        $params = array($this->username, $this->email, password_hash($this->password, PASSWORD_BCRYPT));
         // TODO: check for duplication
         try {
             $this->model->singup($params);
@@ -78,11 +78,6 @@ class User
     {
         $params = array($this->id);
         $this->model->delete($params);
-    }
-
-    public function get_id()
-    {
-        return "id => ".$this->id."\xa";
     }
 
     public static function fetch_all()

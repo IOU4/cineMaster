@@ -49,8 +49,8 @@
         </a>
       </div>
     </nav>
-    <main class="grid gap-6 py-24 px-4">
-      <div id="profile" class="flex gap-3 items-end">
+    <main class="grid gap-6 place-items-center py-24 px-4">
+      <div id="profile" class="flex gap-3 items-end w-11/12 lg:w-9/12">
         <div
           class="w-32 h-32 bg-center bg-cover rounded bg-primary"
           style="
@@ -58,23 +58,33 @@
           "
         ></div>
         <div class="flex flex-col gap-1">
-          <input
-            type="name"
-            name="username"
-            value="Imad Ouchaib"
-            class="text-xl input-ghost input"
-          />
-          <input
-            type="email"
-            name="email"
-            value="I.OUCHAIB@student.youcode.ma"
-            class="input input-ghost input-sm"
-          />
+          <label class="text-xs form-control">
+            username :
+            <input
+              type="name"
+              name="username"
+              value="Imad Ouchaib"
+              class="text-xl input-ghost input"
+              disabled
+            />
+          </label>
+          <label class="text-xs form-control">
+            email:
+            <input
+              type="email"
+              name="email"
+              value="I.OUCHAIB@student.youcode.ma"
+              class="input input-ghost input-sm"
+              disabled
+            />
+          </label>
         </div>
       </div>
-      <a href="posts.html" class="link link-neutral"> add new post</a>
-      <div class="divider">Posts</div>
-      <div id="posts" class="grid gap-8 place-items-center w-full"></div>
+      <div class="w-11/12 lg:w-9/12 divider">Posts</div>
+      <a href="posts.html" class="w-11/12 lg:w-9/12 w- btn btn-primary">
+        add new post</a
+      >
+      <div id="posts" class="grid gap-8 w-11/12 lg:w-9/12"></div>
     </main>
     <footer class="items-center p-4 footer bg-neutral text-neutral-content">
       <div class="grid-flow-col items-center">

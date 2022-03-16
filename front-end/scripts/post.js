@@ -12,13 +12,15 @@ const printComments = (post, username, isLogged) => {
   post.comments.forEach((e) => {
     comments += `
               <div class="shadow-xl mb-4 p-4 rounded-md relative">
-                <p>${e.content}</p>
+                <form id="comment-${e.id}" class="input-group">
+                  <input name="content" class="input input-bordered" value="${e.content}" disabled>
+                </form>
                 <span class="font-bold text-sm">${e.username}</span>
                 <span class="text-xs absolute right-2 bottom-2">${e.created_at}</span>
                 `;
     if (isLogged && username == e.username) {
       comments += `<div class="link" onclick="deleteComment(${e.id})"><svg class="w-4 absolute top-1 right-1 fill-current" viewBox="0 0 24 24"><g data-name="Layer 2"><g data-name="trash-2"><rect width="24" height="24" opacity="0"/><path d="M21 6h-5V4.33A2.42 2.42 0 0 0 13.5 2h-3A2.42 2.42 0 0 0 8 4.33V6H3a1 1 0 0 0 0 2h1v11a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V8h1a1 1 0 0 0 0-2zM10 4.33c0-.16.21-.33.5-.33h3c.29 0 .5.17.5.33V6h-4zM18 19a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V8h12z"/><path d="M9 17a1 1 0 0 0 1-1v-4a1 1 0 0 0-2 0v4a1 1 0 0 0 1 1zM15 17a1 1 0 0 0 1-1v-4a1 1 0 0 0-2 0v4a1 1 0 0 0 1 1z"/></g></g></svg></div>`;
-      // comments += `<div class="link" onclick="updateComment(${e.id})"><svg class="w-4 absolute top-1 right-8 fill-current" viewBox="0 0 16 16"><path fill="#212121" d="M13.6568542,2.34314575 C14.4379028,3.12419433 14.4379028,4.39052429 13.6568542,5.17157288 L6.27039414,12.558033 C5.94999708,12.87843 5.54854738,13.105727 5.10896625,13.2156223 L2.81796695,13.7883721 C2.45177672,13.8799197 2.12008033,13.5482233 2.21162789,13.182033 L2.78437771,10.8910338 C2.894273,10.4514526 3.12156995,10.0500029 3.44196701,9.72960586 L10.8284271,2.34314575 C11.6094757,1.56209717 12.8758057,1.56209717 13.6568542,2.34314575 Z M10.1212441,4.46435931 L4.14907379,10.4367126 C3.95683556,10.6289509 3.82045738,10.8698207 3.75452021,11.1335694 L3.38388341,12.6161166 L4.86643062,12.2454798 C5.1301793,12.1795426 5.37104912,12.0431644 5.56328736,11.8509262 L11.5352441,5.87835931 L10.1212441,4.46435931 Z M11.5355339,3.05025253 L10.8282441,3.75735931 L12.2422441,5.17135931 L12.9497475,4.46446609 C13.3402718,4.0739418 13.3402718,3.44077682 12.9497475,3.05025253 C12.5592232,2.65972824 11.9260582,2.65972824 11.5355339,3.05025253 Z"/></svg></div>`;
+      comments += `<div class="link" onclick="updateComment(${e.id})"><svg class="w-4 absolute top-1 right-7 fill-current" viewBox="0 0 512 512"><path d="M362.7 19.32C387.7-5.678 428.3-5.678 453.3 19.32L492.7 58.75C517.7 83.74 517.7 124.3 492.7 149.3L444.3 197.7L314.3 67.72L362.7 19.32zM421.7 220.3L188.5 453.4C178.1 463.8 165.2 471.5 151.1 475.6L30.77 511C22.35 513.5 13.24 511.2 7.03 504.1C.8198 498.8-1.502 489.7 .976 481.2L36.37 360.9C40.53 346.8 48.16 333.9 58.57 323.5L291.7 90.34L421.7 220.3z"/></svg></div>`;
     }
     comments += "</div>";
   });
@@ -110,9 +112,6 @@ const deletePost = async (id) => {
 
 const updatePost = async (id) => {
   let form = document.getElementById("post-content");
-  console.log(form.children);
-  console.log("dddddddddddddddddddddddddd");
-  console.log(form.childNodes);
   form.childNodes.forEach((e) => {
     if (e.nodeName == "INPUT") e.removeAttribute("disabled");
   });
@@ -133,8 +132,8 @@ const updatePost = async (id) => {
       .then(() => {
         form.childNodes.forEach((e) => {
           if (e.nodeName == "INPUT") e.setAttribute("disabled", "");
-          window.location.reload();
         });
+        submit.remov();
       });
   });
 };
@@ -155,13 +154,13 @@ const deleteComment = async (id) => {
 };
 
 const updateComment = async (id) => {
-  let form = document.getElementById("post-content");
-  form.childNodes.forEach((e) => {
-    if (e.nodeName == "INPUT") e.removeAttribute("disabled");
+  const form = document.getElementById(`comment-${id}`);
+  form.childNodes.forEach((n) => {
+    if (n.nodeName == "INPUT") n.removeAttribute("disabled");
   });
   let submit = document.createElement("button");
-  submit.setAttribute("class", "btn btn-primary");
-  submit.innerText = "Update";
+  submit.setAttribute("class", "btn");
+  submit.innerText = "done";
   form.appendChild(submit);
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -176,8 +175,8 @@ const updateComment = async (id) => {
       .then(() => {
         form.childNodes.forEach((e) => {
           if (e.nodeName == "INPUT") e.setAttribute("disabled", "");
-          window.location.reload();
         });
+        submit.remove();
       });
   });
 };

@@ -10,13 +10,12 @@ let getUserPosts = async (username) => {
     .catch((err) => console.error(err));
   return posts;
 };
+
 let printUserPosts = (posts) => {
   let postsContainer = document.getElementById("posts");
   posts.forEach((post) => {
     postsContainer.innerHTML += `
-    <a href="post.html?id=${
-      post.id
-    }" class="w-11/12 shadow-xl lg:w-9/12 card bg-base-200">
+    <a href="post.html?id=${post.id}" class="shadow-xl w-full card bg-base-200">
       <figure>
         <img src="/api/uploaded/${post.cover ? post.cover : "not_found.jpg"}"/>
       </figure>
